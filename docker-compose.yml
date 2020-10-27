@@ -1,0 +1,10 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:12.3
+    environment:
+      POSTGRES_USER: "library"
+      POSTGRES_PASSWORD: "library"
+      POSTGRES_DB: "library"
+    ports:
+      - 9999:9999
