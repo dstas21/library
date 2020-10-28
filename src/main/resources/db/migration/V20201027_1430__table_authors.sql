@@ -5,9 +5,9 @@ COMMENT ON SCHEMA library IS 'Схема для сервиса библиоте�
 
 CREATE TABLE IF NOT EXISTS library.authors
 (
-    id          BIGSERIAL       PRIMARY KEY NOT NULL,
-    first_name  VARCHAR(255)                NOT NULL,
-    last_name   VARCHAR(255)                NOT NULL
+    id         BIGSERIAL PRIMARY KEY NOT NULL,
+    first_name VARCHAR(80)           NOT NULL,
+    last_name  VARCHAR(80)           NOT NULL
 );
 
 COMMENT ON TABLE library.authors IS 'Таблица с авторами';

@@ -8,18 +8,19 @@ import java.util.stream.Collectors;
 
 /**
  * Добавляет поддержку трансформации из entity в dto и обратно
+ *
+ * @param <E> сущность
+ * @param <D> dto сущности
  */
 public abstract class TransformationService<E, D> {
 
     private final ModelMapper modelMapper;
-
     private final Class<E> entityType;
     private final Class<D> dtoType;
 
     protected TransformationService(Class<E> entityType,
-                                    Class<D> dtoType,
-                                    ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+                                    Class<D> dtoType) {
+        this.modelMapper = new ModelMapper();
         this.entityType = entityType;
         this.dtoType = dtoType;
     }

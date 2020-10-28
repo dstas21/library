@@ -1,23 +1,22 @@
 package com.triangle.library.service.author.dto;
 
+import com.triangle.library.service.author.model.Author;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * DTO для сущности автор {@link Author}
+ */
 @Data
 public class AuthorDto {
 
-    public AuthorDto(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 80)
     private String firstName;
 
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 80)
     private String lastName;
 }

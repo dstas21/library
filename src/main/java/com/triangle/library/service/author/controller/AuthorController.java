@@ -42,8 +42,8 @@ public class AuthorController {
 
     @GetMapping
     public ResponseEntity<List<AuthorDto>> getAll(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "50") int size,
-                                               @RequestParam(defaultValue = "firstName") String sortParam) {
+                                                  @RequestParam(defaultValue = "50") int size,
+                                                  @RequestParam(defaultValue = "firstName") String sortParam) {
         return new ResponseEntity<>(authorService.getAll(PageRequest.of(page, size, Sort.by(sortParam))), HttpStatus.OK);
     }
 
@@ -53,7 +53,7 @@ public class AuthorController {
     }
 
     @Async
-    @PutMapping("/{id")
+    @PutMapping("/{id}")
     public ResponseEntity<AuthorDto> update(@PathVariable Long authorId,
                                             @RequestBody @Valid AuthorDto author) {
         return new ResponseEntity<>(authorService.update(authorId, author), HttpStatus.OK);
