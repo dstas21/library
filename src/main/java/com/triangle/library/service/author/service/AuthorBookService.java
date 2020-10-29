@@ -1,13 +1,11 @@
 package com.triangle.library.service.author.service;
 
-import com.triangle.library.service.author.dto.AuthorBookDto;
-import com.triangle.library.service.author.dto.AuthorDto;
 import com.triangle.library.service.author.model.Author;
 import com.triangle.library.service.book.model.Book;
 import com.triangle.library.service.book.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,28 +26,42 @@ public class AuthorBookService {
     /**
      * Добавляет книгу к автору
      *
-     * @param authorBookDto dto обновления связи автора и книги
+     * @param authorId идентификатор автора
+     * @param bookId   идентификатор книги
      */
-    public void add(AuthorBookDto authorBookDto) {
-        updateDependentEntities(authorBookDto, false);
+    public void add(Long authorId, Long bookId) {
+        updateDependentEntities(authorId, bookId, false);
     }
 
-    public List<AuthorDto> get(String bookName) {
+    /**
+     * Получение всех авторов по названию книги
+     *
+     * @param bookName название книги
+     */
+    public Page<Author> get(String bookName) {
         return authorService.findByBookName(bookName);
     }
 
     /**
-     * удаляет книгу к автору
+     * Удаляет книгу у автора
      *
-     * @param authorBookDto dto обновления связи автора и книги
+     * @param authorId идентификатор автора
+     * @param bookId   идентификатор книги
      */
-    public void delete(AuthorBookDto authorBookDto) {
-        updateDependentEntities(authorBookDto, true);
+    public void delete(Long authorId, Long bookId) {
+        updateDependentEntities(authorId, bookId, true);
     }
 
-    private void updateDependentEntities(AuthorBookDto authorBookDto, boolean remove) {
-        Author author = authorService.findById(authorBookDto.getAuthorId());
-        Book newBook = bookService.findById(authorBookDto.getBookId());
+    /**
+     * Обновляем связь книги с автором
+     *
+     * @param authorId идентификатор автора
+     * @param bookId   идентификатор книги
+     * @param remove   признак обновления, если remove is true то удаляем книгу у автора, иначе добавляем
+     */
+    private void updateDependentEntities(Long authorId, Long bookId, boolean remove) {
+        Author author = authorService.getById(authorId);
+        Book newBook = bookService.getById(bookId);
 
         Set<Book> books = author.getBooks();
         if (remove) {
@@ -59,6 +71,6 @@ public class AuthorBookService {
         }
 
         author.setBooks(books);
-        authorService.update(author.getId(), authorService.toDto(author));
+        authorService.update(author);
     }
 }

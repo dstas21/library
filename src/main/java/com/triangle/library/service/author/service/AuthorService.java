@@ -1,100 +1,79 @@
 package com.triangle.library.service.author.service;
 
-import com.triangle.library.service.author.dto.AuthorDto;
 import com.triangle.library.service.author.model.Author;
 import com.triangle.library.service.author.repository.AuthorRepository;
-import com.triangle.library.service.book.service.BookService;
-import com.triangle.library.service.common.service.CrudService;
-import com.triangle.library.service.common.service.TransformationService;
+import com.triangle.library.service.common.service.AbstractCrudService;
+import com.triangle.library.service.exception.author.AuthorDuplicateFirstAndLastNameException;
 import com.triangle.library.service.exception.author.AuthorNotFoundException;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static java.util.Collections.singleton;
 
 /**
  * Реализация сервиса для сущности автор {@link Author}
  */
 @Service
-public class AuthorService extends TransformationService<Author, AuthorDto>
-        implements CrudService<AuthorDto> {
+public class AuthorService extends AbstractCrudService<Author> {
 
     private final AuthorRepository authorRepository;
-    private final BookService bookService;
 
-    public AuthorService(AuthorRepository authorRepository,
-                         BookService bookService) {
-        super(Author.class, AuthorDto.class);
+    public AuthorService(AuthorRepository authorRepository) {
+        super(authorRepository);
         this.authorRepository = authorRepository;
-        this.bookService = bookService;
     }
 
     /**
-     * Создаем автора
-     *
-     * @param dto dto автора
+     * {@inheritDoc}
      */
-    @Override
     @Transactional
-    public AuthorDto create(AuthorDto dto) {
-        return toDto(authorRepository.save(toEntity(dto)));
+    @Override
+    public Author create(Author entity) {
+        checkDuplicateFirstAndLastName(entity);
+        return super.create(entity);
     }
 
     /**
-     * Получаем список всех авторов
+     * {@inheritDoc}
      */
-    @Override
-    public List<AuthorDto> getAll(Pageable pageable) {
-        return toDtoList(authorRepository.findAll(pageable));
-    }
-
-    /**
-     * Получение автора по id
-     *
-     * @param id идентификатор
-     */
-    @Override
-    public AuthorDto getById(Long id) {
-        return toDto(findById(id));
-    }
-
-    /**
-     * Обновляем автора по id
-     *
-     * @param id  идентификатор автора
-     * @param dto dto автора
-     */
-    @Override
     @Transactional
-    public AuthorDto update(Long id, AuthorDto dto) {
-        Author author = toEntity(dto);
-        author.setId(id);
-        return toDto(authorRepository.save(author));
+    @Override
+    public Author update(Author entity) throws RuntimeException {
+        checkDuplicateFirstAndLastName(entity);
+        return super.update(entity);
     }
 
     /**
-     * Удаляем автора по id
+     * Получение всех авторов по названию книги
      *
-     * @param id идентификатор
+     * @param bookName название книги
+     */
+    public Page<Author> findByBookName(String bookName) {
+        return authorRepository.findByBookName(bookName);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
-    public void delete(Long id) {
-        authorRepository.deleteById(id);
-    }
-
-    public List<AuthorDto> findByBookName(String name) {
-        return toDtoList(authorRepository.findAuthorByBooks(singleton(bookService.findBookByName(name))));
+    protected RuntimeException notFound(Long id) {
+        return new AuthorNotFoundException(id);
     }
 
     /**
-     * Поиск автора по id, если нет то выбрасываем ошибку {@link AuthorNotFoundException}
+     * Проверяем автора на уникальность имени и фамилии
+     * Если автор с таким именем и фамилией существует - исключение {@link AuthorDuplicateFirstAndLastNameException}
      *
-     * @param id идентификатор
+     * @param author автор
      */
-    public Author findById(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
+    private void checkDuplicateFirstAndLastName(Author author) {
+        authorRepository.findAuthorByFirstNameAndLastName(author.getFirstName(), author.getLastName())
+                        .ifPresent(found -> {
+                            if (!found.equals(author)) {
+                                throw new AuthorDuplicateFirstAndLastNameException(
+                                        author.getFirstName(),
+                                        author.getLastName()
+                                );
+                            }
+                        });
     }
 }

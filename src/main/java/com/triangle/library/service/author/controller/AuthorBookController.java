@@ -1,8 +1,8 @@
 package com.triangle.library.service.author.controller;
 
+import com.triangle.library.service.author.api.AuthorBookApi;
 import com.triangle.library.service.author.dto.AuthorBookDto;
 import com.triangle.library.service.author.dto.AuthorDto;
-import com.triangle.library.service.author.service.AuthorBookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,26 +23,41 @@ import java.util.List;
 @RequestMapping("/api/author-book")
 public class AuthorBookController {
 
-    private final AuthorBookService authorBookService;
+    private final AuthorBookApi authorBookApi;
 
-    public AuthorBookController(AuthorBookService authorBookService) {
-        this.authorBookService = authorBookService;
+    public AuthorBookController(AuthorBookApi authorBookApi) {
+        this.authorBookApi = authorBookApi;
     }
 
+    /**
+     * Добавление книги к автору
+     *
+     * @param authorBookDto dto хранящее в себе автора и книгу
+     */
     @PostMapping
     public HttpStatus add(@RequestBody @Valid AuthorBookDto authorBookDto) {
-        authorBookService.add(authorBookDto);
+        authorBookApi.add(authorBookDto);
         return HttpStatus.NO_CONTENT;
     }
 
+    /**
+     * Поиск всех авторов по названию книги
+     *
+     * @param name название книги
+     */
     @GetMapping("/{name}")
-    public ResponseEntity<List<AuthorDto>> get(@PathVariable String bookName) {
-        return new ResponseEntity<>(authorBookService.get(bookName), HttpStatus.OK);
+    public ResponseEntity<List<AuthorDto>> get(@PathVariable String name) {
+        return new ResponseEntity<>(authorBookApi.get(name), HttpStatus.OK);
     }
 
+    /**
+     * Удаление книги у автора
+     *
+     * @param authorBookDto dto хранящее в себе автора и книгу
+     */
     @DeleteMapping
     public HttpStatus delete(@RequestBody @Valid AuthorBookDto authorBookDto) {
-        authorBookService.delete(authorBookDto);
+        authorBookApi.delete(authorBookDto);
         return HttpStatus.NO_CONTENT;
     }
 }

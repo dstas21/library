@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS library.authors
     last_name  VARCHAR(80)           NOT NULL
 );
 
+create unique index if not exists author_first_and_last_name_unique_ix on library.authors (first_name,last_name);
+
 COMMENT ON TABLE library.authors IS 'Таблица с авторами';
 COMMENT ON COLUMN library.authors.id IS 'Идентификатор автора';
 COMMENT ON COLUMN library.authors.first_name IS 'Имя автора';

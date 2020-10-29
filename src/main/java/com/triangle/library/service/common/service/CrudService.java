@@ -1,23 +1,47 @@
 package com.triangle.library.service.common.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 /**
  * Интерфес сервиса создания, чтения, обновления и удаления (CRUD) сущности
  *
- * @param <D> dto сущности
+ * @param <E> сущност
  */
-public interface CrudService<D> {
+public interface CrudService<E> {
 
-    D create(D dto);
+    /**
+     * Создаем сущность
+     *
+     * @param entity сущность
+     */
+    E create(E entity);
 
-    List<D> getAll(Pageable pageable);
+    /**
+     * Получаем список всех сущностей
+     *
+     * @param pageable пагинация выдачи сущностей
+     */
+    Page<E> getAll(Pageable pageable);
 
-    D getById(Long id);
+    /**
+     * Поиск сущности по id, если нет то выбрасываем ошибку
+     *
+     * @param id идентификатор сущности
+     */
+    E getById(Long id) throws RuntimeException;
 
-    D update(Long id, D dto);
+    /**
+     * Обновляем сущность
+     *
+     * @param entity сущность
+     */
+    E update(E entity) throws RuntimeException;
 
+    /**
+     * Удаляем сущность по id
+     *
+     * @param id идентификатор сущности
+     */
     void delete(Long id);
 }
