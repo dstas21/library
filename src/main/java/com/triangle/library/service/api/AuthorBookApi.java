@@ -1,8 +1,7 @@
 package com.triangle.library.service.api;
 
-import com.triangle.library.service.dto.AuthorBookDto;
 import com.triangle.library.service.dto.AuthorDto;
-import com.triangle.library.service.model.Author;
+import com.triangle.library.service.mapper.AuthorMapper;
 import com.triangle.library.service.service.AuthorBookService;
 import org.springframework.stereotype.Component;
 
@@ -12,24 +11,26 @@ import java.util.List;
  * Api для работы связи автора и книг
  */
 @Component
-public class AuthorBookApi extends TransformationApi<Author, AuthorDto> {
+public class AuthorBookApi {
 
     private final AuthorBookService service;
+    private final AuthorMapper mapper;
 
-    public AuthorBookApi(AuthorBookService service) {
-        super(Author.class, AuthorDto.class);
+    public AuthorBookApi(AuthorBookService service,
+                         AuthorMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
-    public void add(AuthorBookDto authorBookDto) {
-        service.add(authorBookDto.getAuthorId(), authorBookDto.getBookId());
+    public void add(Long authorId, Long bookId) {
+        service.add(authorId, bookId);
     }
 
     public List<AuthorDto> get(String bookName) {
-        return toDtoList(service.get(bookName));
+        return mapper.toDtoList(service.get(bookName));
     }
 
-    public void delete(AuthorBookDto authorBookDto) {
-        service.delete(authorBookDto.getAuthorId(), authorBookDto.getBookId());
+    public void delete(Long authorId, Long bookId) {
+        service.delete(authorId, bookId);
     }
 }

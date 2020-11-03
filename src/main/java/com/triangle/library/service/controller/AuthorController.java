@@ -25,7 +25,7 @@ import java.util.List;
  * Сервис для сущности автор {@link Author}
  */
 @RestController
-@RequestMapping("/api/author")
+@RequestMapping("/api/authors")
 public class AuthorController {
 
     private final AuthorApi authorApi;

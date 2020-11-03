@@ -1,5 +1,6 @@
 package com.triangle.library.service.api;
 
+import com.triangle.library.service.mapper.AbstractMapper;
 import com.triangle.library.service.model.BaseEntity;
 import com.triangle.library.service.service.CrudService;
 import org.springframework.data.domain.Pageable;
@@ -13,15 +14,15 @@ import java.util.List;
  * @param <E> сущность
  * @param <D> dto сущности
  */
-public abstract class AbstractCrudApi<E extends BaseEntity, D> extends TransformationApi<E, D> implements CrudApi<D> {
+public abstract class AbstractCrudApi<E extends BaseEntity, D> implements CrudApi<D> {
 
     private final CrudService<E> service;
+    private final AbstractMapper<E, D> mapper;
 
-    public AbstractCrudApi(Class<E> entityType,
-                           Class<D> dtoType,
-                           CrudService<E> service) {
-        super(entityType, dtoType);
+    public AbstractCrudApi(CrudService<E> service,
+                           AbstractMapper<E, D> mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     /**
@@ -30,7 +31,7 @@ public abstract class AbstractCrudApi<E extends BaseEntity, D> extends Transform
     @Transactional
     @Override
     public D create(D dto) {
-        return toDto(service.create(toEntity(dto)));
+        return mapper.toDto(service.create(mapper.toEntity(dto)));
     }
 
     /**
@@ -38,7 +39,7 @@ public abstract class AbstractCrudApi<E extends BaseEntity, D> extends Transform
      */
     @Override
     public List<D> getAll(Pageable pageable) {
-        return toDtoList(service.getAll(pageable));
+        return mapper.toDtoList(service.getAll(pageable));
     }
 
     /**
@@ -46,7 +47,7 @@ public abstract class AbstractCrudApi<E extends BaseEntity, D> extends Transform
      */
     @Override
     public D getById(Long id) {
-        return toDto(service.getById(id));
+        return mapper.toDto(service.getById(id));
     }
 
     /**
@@ -56,9 +57,9 @@ public abstract class AbstractCrudApi<E extends BaseEntity, D> extends Transform
     @Override
     public D update(Long id, D dto) {
         service.getById(id);
-        E entity = toEntity(dto);
+        E entity = mapper.toEntity(dto);
         entity.setId(id);
-        return toDto(service.update(entity));
+        return mapper.toDto(service.update(entity));
     }
 
     /**

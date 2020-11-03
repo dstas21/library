@@ -25,7 +25,7 @@ import java.util.List;
  * Сервис для сущности книга {@link Book}
  */
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/api/books")
 public class BookController {
 
     private final BookApi bookApi;
