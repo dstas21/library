@@ -2,7 +2,6 @@ package com.triangle.library.service;
 
 import com.triangle.library.model.Author;
 import com.triangle.library.model.Book;
-import com.triangle.library.repository.AuthorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -13,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.triangle.library.service.AuthorServiceTest.createAuthorWithId;
 import static com.triangle.library.service.BookServiceTest.createBookWithId;
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,9 +30,16 @@ class AuthorBookServiceTest {
     void add() {
         Author author = createAuthorWithId();
         Book book = createBookWithId();
-        author.getBooks().add(book);
 
-        authorBookService.add(author.getId(),book.getId());
+        Mockito.doReturn(author)
+               .when(authorService)
+               .getById(author.getId());
+
+        Mockito.doReturn(book)
+               .when(bookService)
+               .getById(book.getId());
+
+        authorBookService.add(author.getId(), book.getId());
 
         Mockito.verify(authorService, Mockito.times(1))
                .getById(author.getId());
@@ -50,7 +55,6 @@ class AuthorBookServiceTest {
     void get() {
         Author author = createAuthorWithId();
         Book book = createBookWithId();
-        author.getBooks().add(book);
 
         authorBookService.get(book.getName());
 
@@ -63,7 +67,15 @@ class AuthorBookServiceTest {
         Author author = createAuthorWithId();
         Book book = createBookWithId();
 
-        authorBookService.add(author.getId(),book.getId());
+        Mockito.doReturn(author)
+               .when(authorService)
+               .getById(author.getId());
+
+        Mockito.doReturn(book)
+               .when(bookService)
+               .getById(book.getId());
+
+        authorBookService.add(author.getId(), book.getId());
 
         Mockito.verify(authorService, Mockito.times(1))
                .getById(author.getId());

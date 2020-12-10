@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -182,6 +183,7 @@ class BookServiceTest {
         Book book = new Book();
         book.setId(generateId());
         book.setName("name" + BookCounter.incrementAndGet());
+        book.setAuthors(new HashSet<>());
 
         return book;
     }

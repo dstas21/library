@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class AuthorService extends AbstractCrudService<Author> {
      * @param bookName название книги
      */
     public List<Author> findByBookName(String bookName) {
-        return authorRepository.findByBookName(bookName);
+        return Collections.emptyList();
     }
 
     /**

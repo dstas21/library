@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -186,6 +187,7 @@ class AuthorServiceTest {
         author.setId(generateId());
         author.setFirstName("firstName" + authorCounter.incrementAndGet());
         author.setLastName("lastName" + authorCounter.get());
+        author.setBooks(new HashSet<>());
 
         return author;
     }
