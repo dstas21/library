@@ -1,16 +1,18 @@
 package com.triangle.library.repository;
 
 import com.triangle.library.model.Author;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Репозиторий для сущности автор {@link Author}
  */
+@Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     /**
@@ -22,7 +24,7 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
            + "inner join library.author_book ab on ab.author_id = a.id\n"
            + "inner join library.books b on b.id = ab.book_id\n"
            + "where b.name = :bookName")
-    Page<Author> findByBookName(@Param("bookName") String bookName);
+    List<Author> findByBookName(@Param("bookName") String bookName);
 
     /**
      * Получение автора по имени и фамилии

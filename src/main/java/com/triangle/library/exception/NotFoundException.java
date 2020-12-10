@@ -8,7 +8,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class NotFoundException extends RuntimeException {
+
+    private Long id;
+
     public NotFoundException(Long id) {
         super(String.format("Сущность с id = %d не найдена", id));
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

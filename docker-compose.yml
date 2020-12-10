@@ -7,4 +7,4 @@ services:
       POSTGRES_PASSWORD: "library"
       POSTGRES_DB: "library"
     ports:
-      - 9999:9999
+      - 5432:5432

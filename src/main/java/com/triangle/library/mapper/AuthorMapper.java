@@ -20,4 +20,6 @@ public interface AuthorMapper extends AbstractMapper<Author, AuthorDto> {
 
     @Override
     List<AuthorDto> toDtoList(Page<Author> entitys);
+
+    List<AuthorDto> toDtoList(List<Author> entitys);
 }

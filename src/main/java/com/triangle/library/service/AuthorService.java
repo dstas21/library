@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Реализация сервиса для сущности автор {@link Author}
  */
@@ -45,7 +47,7 @@ public class AuthorService extends AbstractCrudService<Author> {
      *
      * @param bookName название книги
      */
-    public Page<Author> findByBookName(String bookName) {
+    public List<Author> findByBookName(String bookName) {
         return authorRepository.findByBookName(bookName);
     }
 
