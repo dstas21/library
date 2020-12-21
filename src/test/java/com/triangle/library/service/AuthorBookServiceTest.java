@@ -10,8 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static com.triangle.library.service.AuthorServiceTest.createAuthorWithId;
 import static com.triangle.library.service.BookServiceTest.createBookWithId;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,10 +60,23 @@ class AuthorBookServiceTest {
         Author author = createAuthorWithId();
         Book book = createBookWithId();
 
-        authorBookService.get(book.getName());
+        Mockito.doReturn(book)
+               .when(bookService)
+               .getBookByName(book.getName());
+
+        Mockito.doReturn(singletonList(author))
+               .when(authorService)
+               .getByBook(book);
+
+        List<Author> found = authorBookService.get(book.getName());
+
+        assertThat(found).containsOnly(author);
+
+        Mockito.verify(bookService, Mockito.times(1))
+               .getBookByName(book.getName());
 
         Mockito.verify(authorService, Mockito.times(1))
-               .findByBookName(book.getName());
+               .getByBook(book);
     }
 
     @Test

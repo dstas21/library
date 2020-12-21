@@ -55,7 +55,7 @@ public class AuthorController {
     @GetMapping
     public ResponseEntity<List<AuthorDto>> getAll(@RequestParam(name = "page", defaultValue = "0") int page,
                                                   @RequestParam(name = "size", defaultValue = "50") int size,
-                                                  @RequestParam(name = "sort", defaultValue = "name") String sort) {
+                                                  @RequestParam(name = "sort", defaultValue = "lastName") String sort) {
         return ResponseEntity.ok(authorApi.getAll(PageRequest.of(page, size, Sort.by(sort))));
     }
 

@@ -2,11 +2,9 @@ package com.triangle.library.service;
 
 import com.triangle.library.model.Author;
 import com.triangle.library.model.Book;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Реализация сервиса для связи автора и книг
@@ -39,7 +37,7 @@ public class AuthorBookService {
      * @param bookName название книги
      */
     public List<Author> get(String bookName) {
-        return authorService.findByBookName(bookName);
+        return authorService.getByBook(bookService.getBookByName(bookName));
     }
 
     /**
@@ -63,14 +61,11 @@ public class AuthorBookService {
         Author author = authorService.getById(authorId);
         Book newBook = bookService.getById(bookId);
 
-        Set<Book> books = author.getBooks();
         if (remove) {
-            books.remove(newBook);
+            author.getBooks().remove(newBook);
         } else {
-            books.add(newBook);
+            author.getBooks().add(newBook);
         }
-
-        author.setBooks(books);
         authorService.update(author);
     }
 }

@@ -1,0 +1,12 @@
+GET http://localhost:8080/api/authors/books?bookName=testUpdate
+Accept: */*
+Cache-Control: no-cache
+
+###
+POST http://localhost:8080/api/authors/1/books/2
+
+###
+
+DELETE http://localhost:8080/api/authors/1/books/2
+
+###

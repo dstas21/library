@@ -1,0 +1,29 @@
+GET http://localhost:8080/api/books
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET http://localhost:8080/api/books/1
+Accept: */*
+Cache-Control: no-cache
+
+###
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "name": "test"
+}
+
+###
+PUT http://localhost:8080/api/books/1
+Content-Type: application/json
+
+{
+  "name": "testUpdate"
+}
+
+###
+DELETE http://localhost:8080/api/books/2
+
+###

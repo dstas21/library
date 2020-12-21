@@ -1,9 +1,8 @@
 package com.triangle.library.repository;
 
 import com.triangle.library.model.Author;
+import com.triangle.library.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +13,12 @@ import java.util.Optional;
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     /**
-     * Получение авторов по названию книги
+     * Получение авторов по книге
+     * <p>
      *
-     * @param bookName название книги
-     *//*
-    @Query("select a from library.authors a \n"
-           + "inner join library.author_book ab on ab.author_id = a.id\n"
-           + "inner join library.books b on b.id = ab.book_id\n"
-           + "where b.name = :bookName")
-    List<Author> findByBookName(@Param("bookName") String bookName);*/
+     * @param book книга
+     */
+    List<Author> findAuthorsByBooks(Book book);
 
     /**
      * Получение автора по имени и фамилии

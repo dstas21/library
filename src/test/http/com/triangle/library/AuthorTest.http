@@ -1,0 +1,31 @@
+GET http://localhost:8080/api/authors
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET http://localhost:8080/api/authors/1
+Accept: */*
+Cache-Control: no-cache
+
+###
+POST http://localhost:8080/api/authors
+Content-Type: application/json
+
+{
+  "firstName": "test",
+  "lastName": "test"
+}
+
+###
+PUT http://localhost:8080/api/authors/2
+Content-Type: application/json
+
+{
+  "firstName": "test1",
+  "lastName": "test1"
+}
+
+###
+DELETE http://localhost:8080/api/authors/2
+
+###

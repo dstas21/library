@@ -1,6 +1,8 @@
 package com.triangle.library.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +16,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "books", schema = "library")
-@Data
+@Getter
+@Setter
+@ToString
 public class Book extends BaseEntity {
 
     @Column(name = "name")

@@ -1,6 +1,8 @@
 package com.triangle.library.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +18,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "authors", schema = "library")
-@Data
+@Getter
+@Setter
+@ToString
 public class Author extends BaseEntity {
 
     @Column(name = "first_name")
@@ -29,6 +33,7 @@ public class Author extends BaseEntity {
     @JoinTable(
             name = "author_book",
             joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     Set<Book> books = new HashSet<>();
 }

@@ -16,6 +16,10 @@ public class NotFoundException extends RuntimeException {
         this.id = id;
     }
 
+    public NotFoundException(String field) {
+        super(String.format("Сущность с %s не найдена", field));
+    }
+
     public Long getId() {
         return id;
     }
